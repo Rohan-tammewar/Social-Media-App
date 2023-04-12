@@ -10,7 +10,8 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { register } from './controllers/auth.js'
 import authroutes from './routes/auth.js'
-
+import userroutes from './routes/user.js'
+import postroutes from './routes/post.js'
 // Cofigurations
 const __filename = fileURLToPath(import.meta.url) //URl is converted to the file path
 const __dirname = path.dirname(__filename) //directory name is taken from the file path
@@ -41,6 +42,10 @@ const upload = multer({ storage })
 app.post('/auth/register', upload.single('profilePicture'), register)
 // ROUTES
 app.use('/auth', authroutes)
+
+app.use('/users', userroutes)
+
+app.use('/posts', postroutes)
 
 //MONGOOSE SETUP
 const PORT = process.env.PORT || 6001
