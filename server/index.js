@@ -14,6 +14,10 @@ import authroutes from './routes/auth.js'
 import userroutes from './routes/user.js'
 import postroutes from './routes/post.js'
 import { verifyToken } from './middleware/auth.js'
+import User from './models/User.js'
+import Post from './models/post.js'
+import { users, posts } from './data/index.js'
+
 // Cofigurations
 const __filename = fileURLToPath(import.meta.url) //URl is converted to the file path
 const __dirname = path.dirname(__filename) //directory name is taken from the file path
@@ -58,5 +62,9 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(app.listen(PORT, () => console.log(`Listening at ${PORT}`)))
+  .then(() => {
+    app.listen(PORT, () => console.log(`Listening at ${PORT}`))
+    User.insertMany(users)
+    Post.insertMany(posts)
+  })
   .catch((error) => console.log(`${error} did not connect`))
