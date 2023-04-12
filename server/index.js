@@ -9,9 +9,11 @@ import morgan from 'morgan'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { register } from './controllers/auth.js'
+import { createPost } from './controllers/post.js'
 import authroutes from './routes/auth.js'
 import userroutes from './routes/user.js'
 import postroutes from './routes/post.js'
+import { verifyToken } from './middleware/auth.js'
 // Cofigurations
 const __filename = fileURLToPath(import.meta.url) //URl is converted to the file path
 const __dirname = path.dirname(__filename) //directory name is taken from the file path
@@ -40,6 +42,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage })
 
 app.post('/auth/register', upload.single('profilePicture'), register)
+
+app.post('/posts', verifyToken, upload.single('postPicture'), createPost)
 // ROUTES
 app.use('/auth', authroutes)
 
